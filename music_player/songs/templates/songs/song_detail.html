@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ song.title }}</title>
+</head>
+<body>
+    <h1>{{ song.title }}</h1>
+    <p>Artist: {{ song.artist }}</p>
+    <p>Album: {{ song.album }}</p>
+    <p>Release Date: {{ song.release_date }}</p>
+    <audio controls>
+        <source src="{{ song.file.url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</body>
+</html>
