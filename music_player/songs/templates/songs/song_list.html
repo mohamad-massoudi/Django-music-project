@@ -1,16 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Song List</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f4; /* سفید مات */
+            color: #333333; /* مشکی ملایم */
+            font-family: Arial, sans-serif;
+        }
+
+        a {
+            color: #0074d9; /* آبی خلاقانه */
+            transition: color 0.3s ease-in-out;
+        }
+
+        a:hover {
+            color: #e63946; /* قرمز خلاقانه */
+        }
+
+        .button {
+            background-color: #ffffff; /* سفید */
+            color: #0074d9; /* آبی */
+            padding: 12px 24px;
+            border: 2px solid #0074d9;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #0074d9;
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        .input {
+            border: 2px solid #cccccc;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .input:focus {
+            border-color: #0074d9;
+            box-shadow: 0 4px 8px rgba(0, 116, 217, 0.2);
+            outline: none;
+        }
+
+        .list-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .list-item:hover {
+            background-color: #f0f8ff; /* آبی روشن */
+            transform: translateX(10px);
+        }
+
+        h1 {
+            color: #333333;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
+
 <body>
-    <h1>List of Songs</h1>
-    <ul>
-        {% for song in songs %}
-        <li>
-            <a href="{{ song.id }}/">{{ song.title }} - {{ song.artist }}</a>
-        </li>
-        {% endfor %}
-    </ul>
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center">List of Songs</h1>
+
+        <!-- فرم جستجو -->
+        <form method="get" action="{% url 'search_songs' %}" class="mb-6 text-center">
+            <input type="text" name="q" placeholder="Search for songs..." value="{{ request.GET.q }}"
+                class="input">
+            <button type="submit" class="button mt-4">Search</button>
+        </form>
+
+        <!-- نمایش لیست آهنگ‌ها -->
+        {% if songs %}
+        <ul class="list-disc pl-5">
+            {% for song in songs %}
+            <li class="list-item">
+                <a href="{% url 'song_detail' song.id %}" class="text-blue-500 hover:underline">
+                    {{ song.title }}
+                </a>
+                <span class="text-gray-600">by {{ song.artist }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-gray-500 text-center">No songs available.</p>
+        {% endif %}
+
+        <!-- دکمه‌ها -->
+        <div class="mt-8 flex justify-center gap-4">
+            <a href="{% url 'add_song' %}" class="button">
+                Add a New Song
+            </a>
+            <a href="{% url 'playlist_list' %}" class="button">
+                View Playlists
+            </a>
+        </div>
+
+        <!-- احراز هویت -->
+        <div class="mt-6 text-center">
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="text-blue-500 hover:underline">Logout</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Login</a>
+            {% endif %}
+        </div>
+    </div>
 </body>
+
 </html>

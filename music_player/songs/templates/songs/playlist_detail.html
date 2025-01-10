@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ playlist.name }}</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+</head>
+
+<body class="bg-white text-gray-900">
+    <div class="container mx-auto py-8">
+        <!-- عنوان پلی‌لیست -->
+        <h1 class="text-4xl font-bold mb-6 text-center text-blue-800">{{ playlist.name }}</h1>
+
+        <!-- توضیحات پلی‌لیست -->
+        <p class="text-gray-700 text-center mb-6 italic">{{ playlist.description }}</p>
+
+        <!-- لیست آهنگ‌ها -->
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Songs</h2>
+        <ul class="list-disc pl-6">
+            {% for song in playlist.songs.all %}
+            <li class="mb-2">
+                <a href="{% url 'song_detail' song.id %}" class="text-blue-500 hover:text-blue-700 hover:underline transition-all duration-300">
+                    {{ song.title }}
+                </a> by {{ song.artist }}
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- دکمه بازگشت -->
+        <div class="text-center mt-6">
+            <a href="{% url 'playlist_list' %}" class="text-white bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-full transition-all duration-200">
+                Back to Playlists
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

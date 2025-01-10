@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Playlist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 font-inter">
+    <div class="container mx-auto py-8 px-4">
+        <h1 class="text-4xl font-semibold mb-8 text-center text-blue-600">Add a New Playlist</h1>
+        
+        <!-- فرم افزودن پلی لیست -->
+        <form method="post" class="max-w-lg mx-auto bg-white shadow-lg rounded-lg px-8 py-6">
+            {% csrf_token %}
+            
+            <!-- نمایش خطاهای فرم -->
+            <div class="text-red-500 mb-4">
+                {{ form.non_field_errors }}
+            </div>
+
+            <!-- نمایش فیلدهای فرم -->
+            {% for field in form %}
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="text-sm text-red-500 mt-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <!-- دکمه ذخیره -->
+            <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300">
+                Save Playlist
+            </button>
+        </form>
+
+        <!-- لینک بازگشت -->
+        <div class="text-center mt-6">
+            <a href="{% url 'playlist_list' %}" class="text-blue-500 hover:underline">Back to Playlists</a>
+        </div>
+    </div>
+</body>
+</html>

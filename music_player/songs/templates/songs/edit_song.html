@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Song</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto py-8">
+        <!-- عنوان صفحه -->
+        <h1 class="text-4xl font-bold mb-6 text-center text-blue-800">Edit "{{ song.title }}"</h1>
+        
+        <!-- فرم ویرایش آهنگ -->
+        <form method="post" enctype="multipart/form-data" class="max-w-lg mx-auto bg-white shadow-lg rounded-lg px-8 py-6">
+            {% csrf_token %}
+            
+            <!-- نمایش خطاهای فرم -->
+            {{ form.non_field_errors }}
+            
+            <!-- فیلدهای فرم -->
+            {% for field in form %}
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ field.id_for_label }}">
+                        {{ field.label_tag }}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="text-sm text-red-500 mt-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            
+            <!-- دکمه ذخیره تغییرات -->
+            <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300">
+                Save Changes
+            </button>
+        </form>
+        
+        <!-- دکمه بازگشت به صفحه جزئیات آهنگ -->
+        <div class="text-center mt-6">
+            <a href="{% url 'song_detail' song.id %}" class="text-blue-500 hover:underline hover:text-blue-700">
+                Back to Song Details
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

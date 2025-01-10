@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Song</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Add a New Song</h1>
+
+        <!-- فرم افزودن آهنگ -->
+        <form method="post" enctype="multipart/form-data" class="max-w-lg mx-auto bg-white shadow-lg rounded-lg px-8 py-6">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="{{ field.id_for_label }}">
+                        {{ field.label_tag }}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="text-sm text-red-500 mt-2">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <!-- دکمه ذخیره -->
+            <button type="submit"
+                class="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105">
+                Save
+            </button>
+        </form>
+
+        <!-- لینک بازگشت -->
+        <div class="text-center mt-8">
+            <a href="{% url 'song_list' %}" class="text-blue-500 hover:underline hover:text-blue-700 transition-all duration-300">
+                Back to Song List
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>
